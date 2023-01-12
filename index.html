@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Model 101</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta property="og:title" content="Model 101">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Sofia+Sans+Semi+Condensed:wght@100;200;300;400&display=swap');
+
+        body {
+            background-color: rgba(2,20,50, 0.1);
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            align-items: center;
+            font-family: 'Sofia Sans Semi Condensed', sans-serif;
+            color: rgba(2,20,50, 0.3);
+        }
+
+        h1   {
+            font-size: 6.66vw;
+            font-weight: 400;
+            margin-bottom: 2vw;
+            text-transform: lowercase;
+        }
+        p    {
+            text-transform: lowercase;
+            font-size: 4vw;
+            font-weight: 400;
+            margin-top: 2.3vw;
+        }
+        p > span {
+            font-size: 3.4vw;
+        }
+    </style>
+    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Sofia+Sans+Semi+Condensed:wght@100;200;300;400&display=swap" rel="stylesheet">
+</head>
+<body>
+<h1>MODEL 101</h1>
+<div id="noise"></div>
+<p>Industrial <span>&</span> Sexy</p>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.5.0/p5.min.js"></script>
+<script>
+    let yOffset = 0.0;
+
+    const sketch = p5 => {
+        const smallerSize =
+            window.innerWidth > window.innerHeight
+                ? window.innerHeight / 2
+                : window.innerWidth / 2;
+        const constraints = [smallerSize * 0.1, smallerSize * 0.9];
+        p5.setup = () => {
+            p5.createCanvas(smallerSize, smallerSize);
+            p5.background("rgb(230,214,233)");
+            p5.noFill();
+        };
+        p5.draw = () => {
+            p5.background("rgba(2,20,50, 0.05)");
+            p5.stroke("#075862");
+            p5.strokeWeight(1);
+            p5.beginShape();
+
+            let xOffset = 0.0;
+            let step = 10;
+            for (let x = constraints[0]; x < constraints[1] + step / 2; x += step) {
+                let y = p5.map(
+                    p5.noise(xOffset, yOffset),
+                    0,
+                    1,
+                    constraints[0],
+                    constraints[1]
+                );
+                p5.vertex(x, y);
+                xOffset += 0.04;
+            }
+            yOffset += 0.01;
+            p5.endShape();
+            p5.stroke(255);
+            p5.strokeWeight(6.66);
+            p5.rect(
+                constraints[0],
+                constraints[0],
+                smallerSize * 0.8,
+                smallerSize * 0.8
+            );
+        };
+    };
+    new p5(sketch, 'noise');
+
+    const canvas = document.querySelector("canvas");
+    window.addEventListener("resize", () => {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    });
+
+</script>
+
+</body>
+
+</html>
